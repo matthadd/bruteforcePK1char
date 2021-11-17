@@ -48,12 +48,15 @@ def getAddressFromPrivateKey(private_key):
     return "0x" + str(acct.address)
 
 def getAddressFromPrivateKey2(pk):
+    # same as the function up, but had to double check in case something was wrong. Anyway they work the same
     priv_key_bytes = decode_hex("0x" + str(pk))
     priv_key = keys.PrivateKey(priv_key_bytes)
     pub_key = priv_key.public_key
     return pub_key.to_checksum_address()
 
 def make_request(address):
+    # make a request to bscan to check if there is any BNB, if not it ignore the pk and associate address
+
     url = f'https://api.bscscan.com/api'
     # defining a params dict for the parameters to be sent to the API
     params = {'module': 'account',
@@ -71,15 +74,29 @@ def make_request(address):
         print('Need new API key...')
 
 def main():
+    # the main function that put all the orchester in place
+
+    # VARIABLE TO MODIFY (this is not my pk...)
     private_key_to_bruteforce = 'c6cbd7d76bc5baca530c875663711b947efa6a86a900a9e8645ce32e5821484e'
     print('Building dictionnary of valid private keys ...')
     possibilities = bruteforce(private_key_to_bruteforce)
     print('Dictionnary successfully built ! ')
+
+    # for each pk that works
     for pk in possibilities.keys():
+
+        # if the pk has a pb
         if possibilities[pk]:
+
+            # then i make the call
             if make_request(possibilities[pk]):
+
+                # hopefully you get here eventually
                 print(' >>>>>>>>>>>> Hello money <<<<<<<<<<<< : ', pk)
+            
             else:
+                # sorry, I think you will get that a lot...
                 print(possibilities[pk], 'is empty :(')
 
+# do the work
 main()
