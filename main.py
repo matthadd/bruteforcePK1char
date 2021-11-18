@@ -39,35 +39,34 @@ def getAddressFromPrivateKey2(pk):
     return pub_key.to_checksum_address()
 
 def make_request(address):
-    if str(address)[:2] == '0x':
-        address = address[:2]
     url = f'https://api.bscscan.com/api'
     # defining a params dict for the parameters to be sent to the API
     params = {'module': 'account',
               'action': 'balance',
-              'address': '0x' + str(address),
+              'address':  str(address),
               'apikey': 'N7YA98RSZQ2IP3ZIJXPZ7MRYI94G32V11N'}
     # sending get request and saving the response as response object
     r = requests.get(url=url, params=params)
+    r = requests.get(url=f'https://api.bscscan.com/api?module=account&action=balance&address={str(address)}&apikey=N7YA98RSZQ2IP3ZIJXPZ7MRYI94G32V11N')
     res = r.json()
     print(res)
     if res['status'] == "1":
         amountBNB = res['result']
-        if int(amountBNB) > 0:
+        if float(amountBNB) > 0:
             return True
     else:
         print('Need new API key...')
 
 def main():
-    private_key_to_bruteforce = 'c6cbd7d76bc5baca530c875663711b947efa6a86a900a9e8645ce32e5821484e'
+    private_key_to_bruteforce = '57436a3387c92141195a6572385ed542cd491b1685aab057823f2c68b50d4331'
     print('Building dictionnary of valid private keys ...')
     possibilities = bruteforce(private_key_to_bruteforce)
     print('Dictionnary successfully built ! ')
     for pk in possibilities.keys():
         if possibilities[pk]:
-            if make_request(possibilities[pk]):
+            if make_request(str(possibilities[pk])):
                 print(' >>>>>>>>>>>> Hello money <<<<<<<<<<<< : ', pk)
             else:
                 print(possibilities[pk], 'is empty :(')
 
-main(
+main()
