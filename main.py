@@ -49,7 +49,6 @@ def make_request(address):
     r = requests.get(url=url, params=params)
     r = requests.get(url=f'https://api.bscscan.com/api?module=account&action=balance&address={str(address)}&apikey=N7YA98RSZQ2IP3ZIJXPZ7MRYI94G32V11N')
     res = r.json()
-    print(res)
     if res['status'] == "1":
         amountBNB = res['result']
         if float(amountBNB) > 0:
@@ -58,7 +57,7 @@ def make_request(address):
         print('Need new API key...')
 
 def main():
-    private_key_to_bruteforce = '57436a3387c92141195a6572385ed542cd491b1685aab057823f2c68b50d4331'
+    private_key_to_bruteforce = ''
     print('Building dictionnary of valid private keys ...')
     possibilities = bruteforce(private_key_to_bruteforce)
     print('Dictionnary successfully built ! ')
