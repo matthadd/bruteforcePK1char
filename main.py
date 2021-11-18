@@ -68,7 +68,7 @@ def make_request(address):
     res = r.json()
     if res['status'] == "1":
         amountBNB = res['result']
-        if int(amountBNB) > 0:
+        if float(amountBNB) > 0:
             return True
     else:
         print('Need new API key...')
